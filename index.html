@@ -5,10 +5,33 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculator</title>
-  <script src="./javascript.js"></script>
+  <script src="./javascript.js" defer></script>
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  
+  <div>
+    <div class="display"></div>
+    <div class="buttoncontainer">
+      <button class="blue" id="ac">AC</button>
+      <button class="blue" id="plusminus">+/-</button>
+      <button class="blue" id="percent">%</button>
+      <button data-operation="divide" class="orange" id="divide">/</button>
+      <button class="green" id="seven">7</button>
+      <button class="green" id="eight">8</button>
+      <button class="green" id="nine">9</button>
+      <button data-operation="multiply" class="orange" id="multiply">*</button>
+      <button class="green" id="four">4</button>
+      <button class="green" id="five">5</button>
+      <button class="green" id="six">6</button>
+      <button data-operation="substract" class="orange" id="substract">-</button>
+      <button class="green" id="one">1</button>
+      <button class="green" id="two">2</button>
+      <button class="green" id="three">3</button>
+      <button data-operation="add" class="orange" id="add">+</button>
+      <button class="green" id="zero">0</button>
+      <button class="green" id="dot">.</button>
+      <button data-operation="equal" class="orange" id="equal">=</button>
+    </div>
+  </div>
 </body>
 </html>

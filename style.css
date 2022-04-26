@@ -1,0 +1,21 @@
+.buttoncontainer{
+  display: flex;
+  flex-wrap: wrap;
+  width: 500px;
+}
+.display{
+  border: 2px solid black;
+  width: 480px;
+  height: 60px;
+  box-sizing: border-box;
+  font-size: 45px;
+  text-align: right;
+  padding: 5px;
+}
+button{
+  width: 120px;
+  height: 60px;
+}
+#zero{
+  width: 240px;
+}
