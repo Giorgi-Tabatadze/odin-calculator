@@ -38,13 +38,23 @@ body {
   color: grey;
 }
 .green {
-  background-color: gray;
+  background-color: rgb(85, 85, 85);
+}
+.green.playing {
+  background-color: rgb(142, 142, 142);
 }
 .orange {
   background-color: orange;
 }
+.orange.playing {
+  background-color: rgb(255, 255, 255);
+  color: orange;
+}
 .blue {
-  background-color: gainsboro;
+  background-color: rgb(181, 181, 181);
+}
+.blue.playing {
+  background-color: rgb(212, 212, 212);
 }
 
 button{

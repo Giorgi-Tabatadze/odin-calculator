@@ -87,6 +87,9 @@ function numberEvents(e){
     textDisplay = a;
     updateDisplay();
   } else if (i === 2) {
+    if (b === "" && e.target.innerText === "."){
+      return;
+    }
     if (b === "0" && e.target.innerText !== "."){
       b = ""
     }
@@ -125,6 +128,7 @@ function backSpace(e){
   if (i === 0) {
     a = "";
     i = 1;
+
   };
   if (i === 1 && a.length < 2) {
     clear();
@@ -146,7 +150,7 @@ function backSpace(e){
   if (i === 3){
     clear();
   }
-}
+};
 function clear () {
   a = 0;
   b = "";
@@ -157,7 +161,7 @@ function clear () {
   textSmallDisplay = "";
   updateDisplay();
   updateSmallDisplay();
-}
+};
 
 function keyPress (e){
   if (e.key === " "){
@@ -241,14 +245,40 @@ function keyPress (e){
   {
     operate();
   };
+  if (e.key === "%") {
+    percent();
+  }
 };
 
-const buttons = Array.from(document.querySelectorAll(".green"));
-buttons.forEach(button => {
-  button.addEventListener("click", numberEvents)
-});
+
+// animations 
+function clickAnimation (e) {
+  const key = document.querySelector(`button[data-key="${e.target.dataset.key}"]`)
+  if (!key) return;
+  key.classList.add("playing")
+};
+function removeClickTransition (e) {
+  allButtons.forEach(button => {
+      button.classList.remove("playing");
+    
+  });
+};
+function animation (e) {
+  const key = document.querySelector(`button[data-key="${e.key}"]`)
+  if (!key) return;
+  key.classList.add("playing")
+};
+function removeTransition (e) {
+  const key = document.querySelector(`button[data-key="${e.key}"]`)
+  if (!key) return;
+  key.classList.remove("playing")
+};
+
+
+
 
 //operations
+const buttons = Array.from(document.querySelectorAll(".green"));
 
 const btnDivide = document.querySelector("#divide");
 const btnMultiply = document.querySelector("#multiply");
@@ -258,18 +288,56 @@ const btnEqual = document.querySelector("#equal");
 const btnAC = document.querySelector("#ac");
 const btnPlusMinus = document.querySelector("#plusminus");
 const btnPercent = document.querySelector("#percent");
-btnDivide.addEventListener("click", setOperator);
-btnMultiply.addEventListener("click", setOperator);
-btnSubstract.addEventListener("click", setOperator);
-btnAdd.addEventListener("click", setOperator);
-btnEqual.addEventListener("click", operate);
-btnAC.addEventListener("click", clear);
-btnPlusMinus.addEventListener("click", makeNegative);
-btnPercent.addEventListener("click", percent);
+
+//Event listeners that make changes to equasion
+
+//number buttons
+buttons.forEach(button => {
+  button.addEventListener("mousedown", numberEvents)
+});
+
+//operation buttons
+btnDivide.addEventListener("mousedown", setOperator);
+btnMultiply.addEventListener("mousedown", setOperator);
+btnSubstract.addEventListener("mousedown", setOperator);
+btnAdd.addEventListener("mousedown", setOperator);
+btnEqual.addEventListener("mousedown", operate);
+btnAC.addEventListener("mousedown", clear);
+btnPlusMinus.addEventListener("mousedown", makeNegative);
+btnPercent.addEventListener("mousedown", percent);
+
+//click animation event listeners
+const allButtons = Array.from(document.querySelectorAll("button"));
+
+//numbers animation
+buttons.forEach(button => {
+  button.addEventListener("mousedown", clickAnimation)
+});
+
+//operations animation
+btnDivide.addEventListener("mousedown", clickAnimation);
+btnMultiply.addEventListener("mousedown", clickAnimation);
+btnSubstract.addEventListener("mousedown", clickAnimation);
+btnAdd.addEventListener("mousedown", clickAnimation);
+btnEqual.addEventListener("mousedown", clickAnimation);
+btnAC.addEventListener("mousedown", clickAnimation);
+btnPlusMinus.addEventListener("mousedown", clickAnimation);
+btnPercent.addEventListener("mousedown", clickAnimation);
+
+//remove click animations
+window.addEventListener("mouseup", removeClickTransition);
+
+
+//keypress functional event listeners
 document.addEventListener("keydown", keyPress);
+//keypress animation event listeners
+document.addEventListener("keydown", animation);
+window.addEventListener("keyup", removeTransition)
+
 
 const display = document.querySelector(".display");
 const displaySmall = document.querySelector(".displaysmall");
+
 
 textDisplay = a;
 function updateDisplay(){
