@@ -45,6 +45,16 @@ function makeNegative (){
 let a = 0;
 let b = "";
 let operation;
+/*
+i allows us to track on which part of the calculation we are. 
+i = 0 --> starting position. 
+i = 1 -> we are setting up first operand(triggered when we press any number button)
+i = 2 --> we are setting up the second number (triggered after selecting the
+operation to perform)
+i =3 We have calculated the result and the number returned becomes first operand, 
+you have a possibility to select operand which will trigger i = 2 or press any number and
+trigger i = 1
+*/
 i = 0;
 
 
@@ -54,9 +64,21 @@ function numberEvents(e){
     a = "";
     i = 1;
   };
+  if (i === 0 && e.target.innerText === ".") {
+    a = "0.";
+    i = 1;
+    textDisplay = a;
+    updateDisplay();
+  };
+
   if (i === 1) {
     if (a === "0" && e.target.innerText !== "."){
-      a = ""
+      a = "";
+    }
+    if (a === "0" && e.target.innerText === "."){
+      a = "0.";
+      textDisplay = a;
+      updateDisplay();
     }
     if (e.target.innerText === "." && a.includes(".")) {
       return;
@@ -85,8 +107,6 @@ function numberEvents(e){
   } 
 };
 
-//if calculation has already been done and you receive operator change request
-//set b to nothing because you will need to get new b. 
 function setOperator (e){
   if (i === 3) {
     b = "";
@@ -101,6 +121,32 @@ function setOperator (e){
   updateDisplay();
 };
 
+function backSpace(e){
+  if (i === 0) {
+    a = "";
+    i = 1;
+  };
+  if (i === 1 && a.length < 2) {
+    clear();
+  } else if (i ===1) {
+    a = a.slice(0, -1);
+    textDisplay = a;
+    updateDisplay();
+  };
+  if (i === 2 && isNaN(textDisplay.slice(-1))) {
+    operation = "";
+    i = 1;
+    textDisplay = textDisplay.slice(0, -1);
+    updateDisplay();
+  } else if (i === 2) {
+    b = b.slice(0, -1);
+    textDisplay = textDisplay.slice(0, -1);
+    updateDisplay();
+  }
+  if (i === 3){
+    clear();
+  }
+}
 function clear () {
   a = 0;
   b = "";
@@ -113,39 +159,22 @@ function clear () {
   updateSmallDisplay();
 }
 
-const buttons = Array.from(document.querySelectorAll(".green"));
-buttons.forEach(button => {
-  button.addEventListener("click", numberEvents)
-});
-
-//operations
-
-const btnDivide = document.querySelector("#divide");
-const btnMultiply = document.querySelector("#multiply");
-const btnSubstract = document.querySelector("#substract");
-const btnAdd = document.querySelector("#add");
-const btnEqual = document.querySelector("#equal");
-const btnAC = document.querySelector("#ac");
-const btnPlusMinus = document.querySelector("#plusminus");
-const btnPercent = document.querySelector("#percent");
-btnDivide.addEventListener("click", setOperator);
-btnMultiply.addEventListener("click", setOperator);
-btnSubstract.addEventListener("click", setOperator);
-btnAdd.addEventListener("click", setOperator);
-btnEqual.addEventListener("click", operate);
-btnAC.addEventListener("click", clear);
-btnPlusMinus.addEventListener("click", makeNegative);
-btnPercent.addEventListener("click", percent);
-document.addEventListener("keydown", keyPress);
-
-//
 function keyPress (e){
   if (e.key === " "){
     return;
   }
-  if (!isNaN(Number(e.key))) {
+  if (e.key === "Backspace") {
     const target = {
-      innerText : [e.key]
+      innerText : e.key
+    };
+    const whichKey = {
+      target : target
+    };
+    backSpace(whichKey);
+  };
+  if (!isNaN(Number(e.key)) || e.key === ".") {
+    const target = {
+      innerText : e.key
     };
     const whichKey = {
       target : target
@@ -214,8 +243,31 @@ function keyPress (e){
   };
 };
 
+const buttons = Array.from(document.querySelectorAll(".green"));
+buttons.forEach(button => {
+  button.addEventListener("click", numberEvents)
+});
 
-//display
+//operations
+
+const btnDivide = document.querySelector("#divide");
+const btnMultiply = document.querySelector("#multiply");
+const btnSubstract = document.querySelector("#substract");
+const btnAdd = document.querySelector("#add");
+const btnEqual = document.querySelector("#equal");
+const btnAC = document.querySelector("#ac");
+const btnPlusMinus = document.querySelector("#plusminus");
+const btnPercent = document.querySelector("#percent");
+btnDivide.addEventListener("click", setOperator);
+btnMultiply.addEventListener("click", setOperator);
+btnSubstract.addEventListener("click", setOperator);
+btnAdd.addEventListener("click", setOperator);
+btnEqual.addEventListener("click", operate);
+btnAC.addEventListener("click", clear);
+btnPlusMinus.addEventListener("click", makeNegative);
+btnPercent.addEventListener("click", percent);
+document.addEventListener("keydown", keyPress);
+
 const display = document.querySelector(".display");
 const displaySmall = document.querySelector(".displaysmall");
 
