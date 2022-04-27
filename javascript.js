@@ -49,34 +49,34 @@ i = 0;
 
 
 //numbers and operations
-function numberEvents(){
-  if (i === 0 && this.innerText !== ".") {
+function numberEvents(e){
+  if (i === 0 && e.target.innerText !== ".") {
     a = "";
     i = 1;
   };
   if (i === 1) {
-    if (a === "0" && this.innerText !== "."){
+    if (a === "0" && e.target.innerText !== "."){
       a = ""
     }
-    if (this.innerText === "." && a.includes(".")) {
+    if (e.target.innerText === "." && a.includes(".")) {
       return;
     }
-    a += this.innerText
+    a += e.target.innerText
     textDisplay = a;
     updateDisplay();
   } else if (i === 2) {
-    if (b === "0" && this.innerText !== "."){
+    if (b === "0" && e.target.innerText !== "."){
       b = ""
     }
-    if (this.innerText === "." && b.includes(".")) {
+    if (e.target.innerText === "." && b.includes(".")) {
       return;
     }
-    b += this.innerText
-    textDisplay += this.innerText;
+    b += e.target.innerText
+    textDisplay += e.target.innerText;
     updateDisplay();
-  } else if (i === 3 && this.innerText !== "."){
+  } else if (i === 3 && e.target.innerText !== "."){
     a = "";
-    a += this.innerText
+    a += e.target.innerText
     textDisplay = a;
     textSmallDisplay = "";
     updateDisplay();
@@ -87,17 +87,17 @@ function numberEvents(){
 
 //if calculation has already been done and you receive operator change request
 //set b to nothing because you will need to get new b. 
-function setOperator (){
+function setOperator (e){
   if (i === 3) {
     b = "";
   }
   if (i === 2 && b !== ""){
     operate();
-    operation = this.dataset.operation;
+    operation = e.target.dataset.operation;
   }
-  operation = this.dataset.operation
+  operation = e.target.dataset.operation
   i = 2
-  textDisplay = `${a}${this.innerText}`;
+  textDisplay = `${a}${e.target.innerText}`;
   updateDisplay();
 };
 
@@ -136,6 +136,84 @@ btnEqual.addEventListener("click", operate);
 btnAC.addEventListener("click", clear);
 btnPlusMinus.addEventListener("click", makeNegative);
 btnPercent.addEventListener("click", percent);
+document.addEventListener("keydown", keyPress);
+
+//
+function keyPress (e){
+  if (e.key === " "){
+    return;
+  }
+  if (!isNaN(Number(e.key))) {
+    const target = {
+      innerText : [e.key]
+    };
+    const whichKey = {
+      target : target
+    };
+    numberEvents(whichKey);
+  };
+  if (e.key === "+")
+  {
+    const dataset = {
+      operation : "add"
+    }
+    const target = {
+      dataset : dataset,
+      innerText : [e.key]
+    };
+    const whichKey = {
+      target : target
+    };
+    setOperator(whichKey)
+  };
+  if (e.key === "-")
+  {
+    const dataset = {
+      operation : "substract"
+    }
+    const target = {
+      dataset : dataset,
+      innerText : [e.key]
+    };
+    const whichKey = {
+      target : target
+    };
+    setOperator(whichKey)
+  };
+  if (e.key === "*")
+  {
+    const dataset = {
+      operation : "multiply"
+    }
+    const target = {
+      dataset : dataset,
+      innerText : [e.key]
+    };
+    const whichKey = {
+      target : target
+    };
+    setOperator(whichKey)
+  };
+  if (e.key === "/")
+  {
+    const dataset = {
+      operation : "divide"
+    }
+    const target = {
+      dataset : dataset,
+      innerText : [e.key]
+    };
+    const whichKey = {
+      target : target
+    };
+    setOperator(whichKey)
+  };
+  if (e.key === "=" || e.key === "Enter")
+  {
+    operate();
+  };
+};
+
 
 //display
 const display = document.querySelector(".display");
