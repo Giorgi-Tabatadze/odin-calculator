@@ -8,8 +8,11 @@ body {
 .mainContainer{
   background-color: black;
   width: 250px;
-  height: 450px;
+  height: 500px;
   border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 
 .buttoncontainer{
@@ -21,21 +24,28 @@ body {
 }
 .displaycontainer {
   display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 10px;
   color: white;
   width: 240px;
-  height: 60px;
+  height: 120px;
   box-sizing: border-box;
   justify-content: right;
   padding-right: 10px;
-  margin: 30px 0px;
+  margin: 0px 0px;
 }
 
 .display{
-  font-size: 45px;
+  font-size: 30px;
   text-align: right;
 }
 .displaysmall{
+  width: 230px;
+  height: 30px;
   color: grey;
+  text-align: right;
 }
 .green {
   background-color: rgb(85, 85, 85);

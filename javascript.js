@@ -13,9 +13,16 @@ const operations = {
     return a / b;
   },
 };
+
+function expo(x, f) {
+  return Number(x).toExponential(f);
+}
 function operate (){
   if (a !== "" && b !== "") {
-    let result = operations[operation](parseFloat(a), parseFloat(b));
+    let result = operations[operation](Number(a), Number(b));
+    if (result > 99999999999999) {
+      result = expo(result, 8);
+    };
     textSmallDisplay = `${textDisplay}=`;
     textDisplay = result
     updateDisplay();
@@ -35,6 +42,12 @@ function percent (){
 };
 function makeNegative (){
   if (i === 1 || i === 3) {
+    if (a.includes("-")){
+      a = a.slice(1);
+      textDisplay = a;
+      updateDisplay();
+      return;
+    };
     a = `-${a}`;
     textDisplay = a;
     updateDisplay();
@@ -72,7 +85,10 @@ function numberEvents(e){
   };
 
   if (i === 1) {
-    if (a === "0" && e.target.innerText !== "."){
+    if (a.length === 13) {
+      return;
+    }
+    if (a === "0" || a === 0 && e.target.innerText !== "."){
       a = "";
     }
     if (a === "0" && e.target.innerText === "."){
@@ -87,11 +103,15 @@ function numberEvents(e){
     textDisplay = a;
     updateDisplay();
   } else if (i === 2) {
+    if (b.length === 13) {
+      return;
+    }
     if (b === "" && e.target.innerText === "."){
       return;
     }
     if (b === "0" && e.target.innerText !== "."){
       b = ""
+      textDisplay = textDisplay.slice(0, -1);
     }
     if (e.target.innerText === "." && b.includes(".")) {
       return;
@@ -120,7 +140,8 @@ function setOperator (e){
   }
   operation = e.target.dataset.operation
   i = 2
-  textDisplay = `${a}${e.target.innerText}`;
+  textDisplay = `${a}
+  ${e.target.innerText}`;
   updateDisplay();
 };
 
@@ -132,7 +153,7 @@ function backSpace(e){
   };
   if (i === 1 && a.length < 2) {
     clear();
-  } else if (i ===1) {
+  } else if (i === 1) {
     a = a.slice(0, -1);
     textDisplay = a;
     updateDisplay();
